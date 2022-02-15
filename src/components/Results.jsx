@@ -10,9 +10,15 @@ export const Results = () => {
   const location = useLocation();
 
   useEffect(() => {
-    getResults('/search/q=Frontend Engineering&num=20')
-  
-  }, [])
+    if(searchTerm) {
+      if(location.pathname ==='./videos'){
+        getResults(`/search/q=${searchTerm} videos`)
+      } else {
+        getResults(`${location.pathname}/q=${searchTerm}&num=40`)
+      }
+    }  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, location.pathname])
   
 
   if (isLoading) return <Loading />;
@@ -23,7 +29,7 @@ export const Results = () => {
         <div className="flex flex-wrap justify-between space-y-6 sm:px-56">
           {results?.results?.map(({link, title}, index)=> (
             <div key={index} className="md:w-2/5 w-full">
-              <a href={link} target="_blank" ref="noreferrer">
+              <a href={link} target="_blank" rel="noreferrer">
                 <p className="text-sm">
                   {link.length > 30 ? link.substring(0,30): link}
                 </p>
@@ -35,10 +41,20 @@ export const Results = () => {
           ))}
         </div>
       );
-    case "/news":
-      return ();
-    case "/videos":
-      return ();
+    case "/images":
+      return (
+        <div className="flex flex-wrap justify-center items-center">
+        {results?.image_results?.map(({image, link:{href, title}}, index)=> (
+          <a className="sm:p-3 p-5" href={href} target="_blank" rel="noreferrer">
+            <img src={image?.src} alt={title} loading="lazy" />
+            <p className="w-36 break-words text-sm mt-2">
+              {title}
+            </p>
+          </a>
+        ))}
+      </div>
+      );
+
 
     default:
       return "ERROR";
