@@ -1,19 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import { render } from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import { BrowserRouter as Router } from "react-router-dom";
+import App from './App';
+import { StateContextProvider } from './contexts/ResultContextProvider';
+import './index.css';
 
-import "./index.css";
-import App from "./App";
-import { ResultContextProvider } from "./contexts/ResultContextProvider";
-
-ReactDOM.render(
-  <ResultContextProvider>
+render(
+  <StateContextProvider>
     <Router>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <App />
     </Router>
-  </ResultContextProvider>,
-  document.getElementById("root")
+  </StateContextProvider>,
+  document.getElementById('root'),
 );
